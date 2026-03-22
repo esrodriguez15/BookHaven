@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>BookHaven</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+  <div th:replace="~{fragments/nav :: body}"></div>
+
+  <div class="container">
+    <section class="hero">
+      <h1 class="h1">Welcome to BookHaven</h1>
+      <p class="p">
+        A simple book inventory system with Authors + Genres, ready for MySQL and cloud deployment.
+      </p>
+
+      <div class="grid">
+        <div class="col-4">
+          <div class="kpi">
+            <strong th:text="${bookCount}">0</strong>
+            <span>Books in inventory</span>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="kpi">
+            <strong th:text="${authorCount}">0</strong>
+            <span>Authors</span>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="kpi">
+            <strong th:text="${genreCount}">0</strong>
+            <span>Genres</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+        <a class="btn btn-primary" th:href="@{/inventory/books}">Go to Books</a>
+        <a class="btn" th:href="@{/inventory/authors}">Manage Authors</a>
+        <a class="btn" th:href="@{/inventory/genres}">Manage Genres</a>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="col-6">
+        <div class="card">
+          <h2 style="margin:0 0 6px;">What you can do</h2>
+          <p class="p" style="margin-bottom:10px;">
+            Add, edit, and delete books. Create authors and genres as needed.
+          </p>
+          <ul style="margin:0; color: var(--muted); line-height:1.7;">
+            <li>CRUD Books</li>
+            <li>Manage Authors</li>
+            <li>Manage Genres</li>
+            <li>Cloud-ready config (env vars)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

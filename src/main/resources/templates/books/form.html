@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Book Form</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+  <div th:replace="fragments/nav :: body"></div>
+
+  <main style="padding:16px; max-width:700px;">
+    <h1 th:text="${bookForm.id == null ? 'Add Book' : 'Edit Book'}">Book Form</h1>
+
+    <form th:action="${bookForm.id == null} ? @{/inventory/books} : @{/inventory/books/{id}(id=${bookForm.id})}"
+          th:object="${bookForm}" method="post" style="display:grid; gap:10px;">
+
+      <label>
+        Title
+        <input type="text" th:field="*{title}" required />
+      </label>
+      <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></div>
+
+      <label>
+        ISBN
+        <input type="text" th:field="*{isbn}" />
+      </label>
+
+      <label>
+        Quantity
+        <input type="number" th:field="*{quantity}" min="0" required />
+      </label>
+      <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color:red;"></div>
+
+      <label>
+        Author
+        <select th:field="*{authorId}" required>
+          <option value="" disabled>Select an author</option>
+          <option th:each="a : ${authors}"
+                  th:value="${a.id}"
+                  th:text="${a.name}">
+          </option>
+        </select>
+        <p style="margin:0;">
+        	Missing an author? <a th:href="@{/inventory/authors}">Add one here</a>
+        </p>
+      </label>
+      <div th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" style="color:red;"></div>
+
+      <label>
+        Genre
+        <select th:field="*{genreId}" required>
+          <option value="" disabled>Select a genre</option>
+          <option th:each="g : ${genres}"
+                  th:value="${g.id}"
+                  th:text="${g.name}">
+          </option>
+        </select>
+        <p style="margin:0;">
+        	Missing a genre? <a th:href="@{/inventory/genres}">Add one here</a>
+        </p>
+      </label>
+      <div th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}" style="color:red;"></div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button type="submit">Save</button>
+        <a th:href="@{/inventory/books}">Cancel</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

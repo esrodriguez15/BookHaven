@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Authors</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+  <div th:replace="~{fragments/nav :: body}"></div>
+
+  <div class="container">
+    <div class="grid">
+      <!-- MAIN: Author List -->
+      <section class="col-8 card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+          <div>
+            <h1 style="margin:0;">Authors</h1>
+            <p class="help" style="margin:6px 0 0;">Create authors first, then select them when adding books.</p>
+          </div>
+          <a class="btn" th:href="@{/inventory/books/new}">+ Add Book</a>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="a : ${authors}">
+              <td th:text="${a.name}">Author Name</td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(authors)}">
+              <td>No authors yet. Add one on the right.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SIDE: Add Author -->
+      <aside class="col-4 card">
+        <h2 style="margin:0 0 10px;">Add Author</h2>
+
+        <form th:action="@{/inventory/authors}" th:object="${authorForm}" method="post" style="display:grid; gap:10px;">
+          <label>
+            Name
+            <input class="input" type="text" th:field="*{name}" placeholder="e.g., Brandon Sanderson" />
+          </label>
+
+          <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:var(--danger);"></div>
+
+          <button class="btn btn-primary" type="submit">Add Author</button>
+        </form>
+
+        <p class="help" style="margin-top:12px;">
+          Tip: keep names consistent (same spelling/case) to avoid duplicates.
+        </p>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

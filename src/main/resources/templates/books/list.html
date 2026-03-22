@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Books</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+  <div th:replace="fragments/nav :: body"></div>
+
+  <main style="padding:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h1>Books</h1>
+      <a class="btn btn-primary" th:href="@{/inventory/books/new}">+ Add Book</a>
+    </div>
+
+    <table class="table" border="1" cellpadding="8" style="border-collapse:collapse; width:100%; margin-top:12px;">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>ISBN</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Qty</th>
+          <th style="width:160px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="b : ${books}">
+          <td th:text="${b.title}">Title</td>
+          <td th:text="${b.isbn}">ISBN</td>
+          <td th:text="${b.author != null ? b.author.name : ''}">Author</td>
+          <td th:text="${b.genre != null ? b.genre.name : ''}">Genre</td>
+          <td th:text="${b.quantity}">0</td>
+          <td style="display:flex; gap:6px; align-items:center;">
+            <a class="btn btn-warning" th:href="@{/inventory/books/{id}/edit(id=${b.id})}">Edit</a>
+            <form th:action="@{/inventory/books/{id}/delete(id=${b.id})}" method="post" style="display:inline;">
+              <button class="btn btn-danger" type="submit" onclick="return confirm('Delete this book?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(books)}">
+          <td colspan="6">No books yet. Click “Add Book”.</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
