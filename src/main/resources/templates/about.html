@@ -7,12 +7,11 @@
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
 
-<body class="bg-light">
+<body>
 
-    <!-- Navbar -->
-    <div th:replace="fragments/nav :: nav"></div>
+    <div th:replace="~{fragments/nav :: body}"></div>
 
-    <div class="contianer mt-5">
+    <div class="container mt-5">
         <div class="card shadow-sm">
             <div class="card-body">
                 <h1 class="card-title mb-4">About BookHaven</h1>
@@ -32,7 +31,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Esmeralda Rodriguez</h4>
                                 <p class="card-text">Scrum Master</p>
-                                <a th:href="@{/about/Esmeralda}" class="btn btn-primary btn-sm">Learn More<</a>
+                                <a th:href="@{/about/Esmeralda}" class="btn btn-primary btn-sm">Learn More</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +41,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">James Pinto</h4>
                                 <p class="card-text">Product Owner</p>
-                                <a th:href="@{/about/JamesP}" class="btn btn-primary btn-sm">Learn More<</a>
+                                <a th:href="@{/about/JamesP}" class="btn btn-primary btn-sm">Learn More</a>
                             </div>
                         </div>
                     </div>
@@ -52,7 +51,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">James Shonk</h4>
                                 <p class="card-text">Lead Developer</p>
-                                <a th:href="@{/about/JamesS}" class="btn btn-primary btn-sm">Learn More<</a>
+                                <a th:href="@{/about/JamesS}" class="btn btn-primary btn-sm">Learn More</a>
                             </div>
                         </div>
                     </div>

@@ -7,10 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div th:replace="fragments/nav :: nav"></div>
-    <div class="container mt-5">
+    <div th:replace="~{fragments/nav :: body}"></div>
+    <div class="container mt-3">
         <div class="card shadow-sm">
             <div class="card-body">
                 <h1 class="card-title mb-4">James Shonk</h1>
