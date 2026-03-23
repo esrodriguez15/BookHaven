@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>About Bookhaven</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/nav :: nav"></div>
+
+    <div class="contianer mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title mb-4">About BookHaven</h1>
+                <p class="lead">
+                    BookHaven is a library managment system built with SpringBoot and ThymeLeaf.
+                </p>
+                <p>
+                    This is a school project in whihc we are learning Cloud Programming.
+                    This library mangement system will help us improve our skills. Here we can add,
+                    delete, and edit the books in our inventory. Below are small introductionary bios for each of our team members!
+                </p>
+
+                <div class="row mt-4">
+                    <!--Esmeralda-->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h4 class="card-title">Esmeralda Rodriguez</h4>
+                                <p class="card-text">Scrum Master</p>
+                                <a th:href="@{/about/Esmeralda}" class="btn btn-primary btn-sm">Learn More<</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--James Pinto-->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h4 class="card-title">James Pinto</h4>
+                                <p class="card-text">Product Owner</p>
+                                <a th:href="@{/about/JamesP}" class="btn btn-primary btn-sm">Learn More<</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--James Shonk-->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h4 class="card-title">James Shonk</h4>
+                                <p class="card-text">Lead Developer</p>
+                                <a th:href="@{/about/JamesS}" class="btn btn-primary btn-sm">Learn More<</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/" class="btn btn=primary mt-3">Back Home</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

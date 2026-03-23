@@ -28,4 +28,35 @@ public class HomeController {
 		model.addAttribute("genreCount", genreRepo.count());
 		return "home";
 	}
+
+	@GetMapping("/about")
+	public String about()
+	{
+		return "about";
+	}
+
+	@GetMapping("/contact")
+	public String contact()
+	{
+		return "contact";
+	}
+
+	@GetMapping("/about/Esmeralda")
+	public String aboutEsmeralda() 
+	{
+		return "about-Esmeralda";
+	}
+
+	@GetMapping("/about/JamesP")
+	public String aboutJamesP() 
+	{
+		return "about-JamesP";
+	}
+
+	@GetMapping("/about/JamesS")
+	public String aboutJamesS() 
+	{
+		return "about-JamesS";
+	}
+
 }

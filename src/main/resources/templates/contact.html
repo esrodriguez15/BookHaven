@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="fragments/nav :: nav"></div>
+
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title mb-4">Contact Us</h1>
+
+                <p class="lead">Have questions about BookHaven? Our Process? Ask us anything!.</p>
+
+                <ul class="list-group mb-4">
+                    <li class="list-group-item"><strong>Email:</strong> support@bookhaven.com</li>
+                    <li class="list-group-item"><strong>Phone:</strong> (555) 588‑4584</li>
+                    <li class="list-group-item"><strong>Address:</strong>42 P Wallaby Way, Phoenix, AZ</li>
+                </ul>
+
+                <a href="/" class="btn btn-primary">Back Home</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
