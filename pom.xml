@@ -36,11 +36,6 @@
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
 			<version>1.12.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.cloud.sql</groupId>
-			<artifactId>cloud-sql-mysql</artifactId>
-			<version>1.12.0</version>
-		</dependency>
 		<!--Spring Boot-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,10 +74,22 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+		<!--Spring Boot Maven-->
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		</plugin>
+
+		<!--Google cloud plug-in-->
+		<plugin>
+			<groupId>com.google.cloud.tools</groupId>
+			<artifactId>appengine-maven-plugin</artifactId>
+			<version>2.7.0</version>
+			<configuration>
+				<projectId>GCLOUD_CONFIG</projectId>
+				<version>1</version>
+			</configuration>
+		</plugin>
 		</plugins>
 	</build>
 
