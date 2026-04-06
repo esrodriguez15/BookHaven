@@ -1,5 +1,7 @@
 package com.example.bookapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import jakarta.validation.constraints.NotBlank;
 @RequestMapping("/inventory/genres")
 public class GenreController {
 
+	private static final Logger logger = LoggerFactory.getLogger(GenreController.class);
 	private final GenreRepository genreRepo;
 
 	public GenreController(GenreRepository genreRepo) {
@@ -27,21 +30,34 @@ public class GenreController {
 	// LIST
 	@GetMapping
 	public String list(Model model) {
-		model.addAttribute("genres", genreRepo.findAll());
+		logger.info("ENTER list()");
+
+		var genres = genreRepo.findAll();
+		model.addAttribute("genres", genres);
 		model.addAttribute("genreForm", new GenreForm());
+
+		logger.info("EXIT list() - {} genres returned", genres.size());
 		return "genres/list";
 	}
 
 	// CREATE
 	@PostMapping
 	public String create(@Valid @ModelAttribute("genreForm") GenreForm form, BindingResult result, Model model) {
+		logger.info("ENTER create() - genre name={}", form.getName());
 
 		if (result.hasErrors()) {
-			model.addAttribute("genres", genreRepo.findAll());
+			logger.warn("VALIDATION ERROR in create() - returning genres");
+
+			var genres = genreRepo.findAll();
+			model.addAttribute("genres", genres);
+
+			logger.info("EXIT create() - validation failed");
 			return "genres/list";
 		}
 
-		genreRepo.save(new Genre(form.getName().trim()));
+		Genre savedGenre = genreRepo.save(new Genre(form.getName().trim()));
+
+		logger.info("EXIT create() - genre created successfully with id={}", savedGenre.getId());
 		return "redirect:/inventory/genres";
 	}
 

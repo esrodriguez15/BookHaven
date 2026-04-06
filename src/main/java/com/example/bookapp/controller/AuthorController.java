@@ -1,5 +1,7 @@
 package com.example.bookapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import jakarta.validation.constraints.NotBlank;
 @RequestMapping("/inventory/authors")
 public class AuthorController {
 
+	private static final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 	private final AuthorRepository authorRepo;
 
 	public AuthorController(AuthorRepository authorRepo) {
@@ -27,8 +30,13 @@ public class AuthorController {
 	// List All
 	@GetMapping
 	public String list(Model model) {
-		model.addAttribute("authors", authorRepo.findAll());
+		logger.info("ENTER list()");
+
+		var authors = authorRepo.findAll();
+		model.addAttribute("authors", authors);
 		model.addAttribute("authorForm", new AuthorForm());
+
+		logger.info("EXIT list() - {} authors returned", authors.size());
 		return "authors/list";
 	}
 
@@ -36,12 +44,21 @@ public class AuthorController {
 	@PostMapping
 	public String create(@Valid @ModelAttribute("authorForm") AuthorForm form, BindingResult result, Model model) {
 
+		logger.info("ENTER create() - author name={}", form.getName());
+
 		if (result.hasErrors()) {
-			model.addAttribute("authors", authorRepo.findAll());
+			logger.warn("VALIDATION ERROR in create() - returning authors");
+
+			var authors = authorRepo.findAll();
+			model.addAttribute("authors", authors);
+
+			logger.info("EXIT create() - validation failed");
 			return "authors/list";
 		}
 
-		authorRepo.save(new Author(form.getName().trim()));
+		Author savedAuthor = authorRepo.save(new Author(form.getName().trim()));
+
+		logger.info("EXIT create() - author created successfully with id={}", savedAuthor.getId());
 		return "redirect:/inventory/authors";
 	}
 

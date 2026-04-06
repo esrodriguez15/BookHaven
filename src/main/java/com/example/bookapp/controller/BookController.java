@@ -1,5 +1,7 @@
 package com.example.bookapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/inventory/books")
 public class BookController {
 
+	private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 	private final BookRepository bookRepo;
 	private final AuthorRepository authorRepo;
 	private final GenreRepository genreRepo;
@@ -36,26 +39,43 @@ public class BookController {
 	// List All
 	@GetMapping
 	public String list(Model model) {
-		model.addAttribute("books", bookRepo.findAll());
+		logger.info("ENTER list()");
+
+		var books = bookRepo.findAll();
+		model.addAttribute("books", books);
+
+		logger.info("EXIT list() - {} books returned", books.size());
 		return "books/list";
 	}
 
 	// Create Form
 	@GetMapping("/new")
 	public String createForm(Model model) {
+		logger.info("ENTER createForm()");
+
+		var authors = authorRepo.findAll();
+		var genres = genreRepo.findAll();
+
 		model.addAttribute("bookForm", new BookForm());
-		model.addAttribute("authors", authorRepo.findAll());
-		model.addAttribute("genres", genreRepo.findAll());
+		model.addAttribute("authors", authors);
+		model.addAttribute("genres", genres);
+
+		logger.info("EXIT createForm() - {} authors and {} genres loaded", authors.size(), genres.size());
 		return "books/form";
 	}
 
 	// Create Submission
 	@PostMapping
 	public String create(@Valid @ModelAttribute("bookForm") BookForm form, BindingResult result, Model model) {
+		logger.info("ENTER create() - title={}, isbn={}", form.getTitle(), form.getIsbn());
 
 		if (result.hasErrors()) {
+			logger.warn("VALIDATION ERROR in create() - returning books/form");
+
 			model.addAttribute("authors", authorRepo.findAll());
 			model.addAttribute("genres", genreRepo.findAll());
+
+			logger.info("EXIT create() - validation failed");
 			return "books/form";
 		}
 
@@ -69,13 +89,17 @@ public class BookController {
 		book.setAuthor(author);
 		book.setGenre(genre);
 
-		bookRepo.save(book);
+		Book savedBook = bookRepo.save(book);
+
+		logger.info("EXIT create() - book created successfully with id={}", savedBook.getId());
 		return "redirect:/inventory/books";
 	}
 
 	// Edit Form
 	@GetMapping("/{id}/edit")
 	public String editForm(@PathVariable Long id, Model model) {
+		logger.info("ENTER editForm() - id={}", id);
+
 		Book book = bookRepo.findById(id).orElseThrow();
 
 		BookForm form = new BookForm();
@@ -86,9 +110,14 @@ public class BookController {
 		form.setAuthorId(book.getAuthor() != null ? book.getAuthor().getId() : null);
 		form.setGenreId(book.getGenre() != null ? book.getGenre().getId() : null);
 
+		var authors = authorRepo.findAll();
+		var genres = genreRepo.findAll();
+
 		model.addAttribute("bookForm", form);
-		model.addAttribute("authors", authorRepo.findAll());
-		model.addAttribute("genres", genreRepo.findAll());
+		model.addAttribute("authors", authors);
+		model.addAttribute("genres", genres);
+
+		logger.info("EXIT editForm() - loaded edit form for id={}", id);
 		return "books/form";
 	}
 
@@ -96,10 +125,15 @@ public class BookController {
 	@PostMapping("/{id}")
 	public String update(@PathVariable Long id, @Valid @ModelAttribute("bookForm") BookForm form, BindingResult result,
 			Model model) {
+		logger.info("ENTER update() - id={}", id);
 
 		if (result.hasErrors()) {
+			logger.warn("VALIDATION ERROR in update() - id={}", id);
+
 			model.addAttribute("authors", authorRepo.findAll());
 			model.addAttribute("genres", genreRepo.findAll());
+
+			logger.info("EXIT update() - validation failed for id={}", id);
 			return "books/form";
 		}
 
@@ -114,14 +148,20 @@ public class BookController {
 		book.setAuthor(author);
 		book.setGenre(genre);
 
-		bookRepo.save(book);
+		Book savedBook = bookRepo.save(book);
+
+		logger.info("EXIT update() - book updated successfully for id={}", savedBook.getId());
 		return "redirect:/inventory/books";
 	}
 
 	// Delete
 	@PostMapping("/{id}/delete")
 	public String delete(@PathVariable Long id) {
+		logger.info("ENTER delete() - id={}", id);
+
 		bookRepo.deleteById(id);
+
+		logger.info("EXIT delete() - book deleted successfully for id={}", id);
 		return "redirect:/inventory/books";
 	}
 }
