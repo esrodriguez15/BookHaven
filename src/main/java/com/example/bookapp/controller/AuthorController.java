@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.bookapp.model.Author;
-import com.example.bookapp.repository.AuthorRepository;
+import com.example.bookapp.service.AuthorService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -21,10 +21,10 @@ import jakarta.validation.constraints.NotBlank;
 public class AuthorController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthorController.class);
-	private final AuthorRepository authorRepo;
+	private final AuthorService authorService;
 
-	public AuthorController(AuthorRepository authorRepo) {
-		this.authorRepo = authorRepo;
+	public AuthorController(AuthorService authorService) {
+		this.authorService = authorService;
 	}
 
 	// List All
@@ -32,7 +32,7 @@ public class AuthorController {
 	public String list(Model model) {
 		logger.info("ENTER list()");
 
-		var authors = authorRepo.findAll();
+		var authors = authorService.findAll();
 		model.addAttribute("authors", authors);
 		model.addAttribute("authorForm", new AuthorForm());
 
@@ -49,14 +49,14 @@ public class AuthorController {
 		if (result.hasErrors()) {
 			logger.warn("VALIDATION ERROR in create() - returning authors");
 
-			var authors = authorRepo.findAll();
+			var authors = authorService.findAll();
 			model.addAttribute("authors", authors);
 
 			logger.info("EXIT create() - validation failed");
 			return "authors/list";
 		}
 
-		Author savedAuthor = authorRepo.save(new Author(form.getName().trim()));
+		Author savedAuthor = authorService.save(new Author(form.getName().trim()));
 
 		logger.info("EXIT create() - author created successfully with id={}", savedAuthor.getId());
 		return "redirect:/inventory/authors";

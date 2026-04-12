@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.bookapp.model.Genre;
-import com.example.bookapp.repository.GenreRepository;
+import com.example.bookapp.service.GenreService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -21,10 +21,10 @@ import jakarta.validation.constraints.NotBlank;
 public class GenreController {
 
 	private static final Logger logger = LoggerFactory.getLogger(GenreController.class);
-	private final GenreRepository genreRepo;
+	private final GenreService genreService;
 
-	public GenreController(GenreRepository genreRepo) {
-		this.genreRepo = genreRepo;
+	public GenreController(GenreService genreService) {
+		this.genreService = genreService;
 	}
 
 	// LIST
@@ -32,7 +32,7 @@ public class GenreController {
 	public String list(Model model) {
 		logger.info("ENTER list()");
 
-		var genres = genreRepo.findAll();
+		var genres = genreService.findAll();
 		model.addAttribute("genres", genres);
 		model.addAttribute("genreForm", new GenreForm());
 
@@ -48,14 +48,14 @@ public class GenreController {
 		if (result.hasErrors()) {
 			logger.warn("VALIDATION ERROR in create() - returning genres");
 
-			var genres = genreRepo.findAll();
+			var genres = genreService.findAll();
 			model.addAttribute("genres", genres);
 
 			logger.info("EXIT create() - validation failed");
 			return "genres/list";
 		}
 
-		Genre savedGenre = genreRepo.save(new Genre(form.getName().trim()));
+		Genre savedGenre = genreService.save(new Genre(form.getName().trim()));
 
 		logger.info("EXIT create() - genre created successfully with id={}", savedGenre.getId());
 		return "redirect:/inventory/genres";
